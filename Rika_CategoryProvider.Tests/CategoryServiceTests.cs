@@ -8,6 +8,8 @@ using Xunit;
 using Rika_CategoryProvider.Infrastructure.Entities;
 using Rika_CategoryProvider.Infrastructure.Repos;
 
+namespace Rika_CategoryService.Tests;
+
 public class CategoryServiceTests
 {
     private readonly Mock<IBaseRepository<CategoryEntity>> _categoryRepositoryMock;

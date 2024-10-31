@@ -61,6 +61,48 @@ namespace Rika_CategoryProvider.Tests
             // Assert
             Assert.Equal(newCategory, result);
         }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldThrowException()
+        {
+            // Arrange
+            _repositoryMock.Setup(repo => repo.GetAllAsync()).ThrowsAsync(new System.Exception("Test exception"));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<System.Exception>(async () => await _repositoryMock.Object.GetAllAsync());
+
+            // Verify the exception message
+            Assert.Equal("Test exception", exception.Message);
+        }
+
+        [Fact]
+        public async Task AddAsync_ShouldThrowException()
+        {
+            // Arrange
+            var newCategory = new Category { Id = 3, Name = "New Category" };
+            _repositoryMock.Setup(repo => repo.AddAsync(newCategory)).ThrowsAsync(new System.Exception("Test exception"));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<System.Exception>(async () => await _repositoryMock.Object.AddAsync(newCategory));
+
+            // Verify the exception message
+            Assert.Equal("Test exception", exception.Message);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_ShouldReturnNull_WhenCategoryDoesNotExist()
+        {
+            // Arrange
+            int nonExistentCategoryId = 999; // Ett ID som vi vet inte finns
+            _repositoryMock.Setup(repo => repo.GetByIdAsync(nonExistentCategoryId)).ReturnsAsync((Category)null);
+
+            // Act
+            var result = await _repositoryMock.Object.GetByIdAsync(nonExistentCategoryId);
+
+            // Assert
+            Assert.Null(result); // Testet misslyckas om `result` inte är null
+        }
+
     }
 
     public class Category
