@@ -30,7 +30,7 @@ public class CategoryServiceTests
         var categoryName = "New Category";
 
         _categoryRepositoryMock.Setup(repo => repo.GetCategoryAsync(It.IsAny<Expression<Func<CategoryEntity, bool>>>()))
-                               .ReturnsAsync((CategoryEntity)null); // Simulerar att kategorin inte finns
+                               .ReturnsAsync((CategoryEntity)null);
 
         _categoryRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<CategoryEntity>()))
                                .ReturnsAsync(new CategoryEntity { CategoryName = categoryName });
@@ -50,11 +50,11 @@ public class CategoryServiceTests
         // Arrange
         var categoryName = "Existing Category";
         _categoryRepositoryMock.Setup(repo => repo.GetCategoryAsync(It.IsAny<Expression<Func<CategoryEntity, bool>>>()))
-                               .ReturnsAsync(new CategoryEntity { CategoryName = categoryName }); // Simulerar att kategorin redan finns
+                               .ReturnsAsync(new CategoryEntity { CategoryName = categoryName });
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _categoryService.AddCategoryAsync(categoryName));
-        Assert.Equal("Category already exists.", exception.Message); // Kontrollera undantagsmeddelandet
+        Assert.Equal("Category already exists.", exception.Message);
     }
 
     [Fact]

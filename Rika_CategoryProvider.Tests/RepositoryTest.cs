@@ -35,10 +35,10 @@ namespace Rika_CategoryProvider.Tests
         {
             // Arrange
             var categories = new List<Category>
-        {
+            {
             new Category { Id = 1, Name = "Category 1" },
             new Category { Id = 2, Name = "Category 2" }
-        };
+            };
             _repositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(categories);
 
             // Act
