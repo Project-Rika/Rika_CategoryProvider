@@ -67,4 +67,8 @@ public class CategoryRepository : IBaseRepository<CategoryEntity>
 		return await _context.Categories.ToListAsync();
 	}
 
+    public void GetCategoryAsync(Func<CategoryEntity, bool> func)
+    {
+        throw new NotImplementedException();
+    }
 }

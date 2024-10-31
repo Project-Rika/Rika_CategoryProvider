@@ -1,79 +1,72 @@
-﻿using System;
+﻿using Moq;
+using Rika_CategoryProvider.Infrastructure.Entities;
+using Rika_CategoryProvider.Infrastructure.Repos;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Rika_CategoryProvider.Tests
 {
-	internal class RepositoryTest
-	{
-	}
+    public class BaseRepositoryTests
+    {
+        private readonly Mock<IBaseRepository<Category>> _repositoryMock;
+
+        public BaseRepositoryTests()
+        {
+            _repositoryMock = new Mock<IBaseRepository<Category>>();
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_ShouldReturnCorrectEntity()
+        {
+            // Arrange
+            var expectedCategory = new Category { Id = 1, Name = "Test Category" };
+            _repositoryMock.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(expectedCategory);
+
+            // Act
+            var result = await _repositoryMock.Object.GetByIdAsync(1);
+
+            // Assert
+            Assert.Equal(expectedCategory, result);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnAllEntities()
+        {
+            // Arrange
+            var categories = new List<Category>
+        {
+            new Category { Id = 1, Name = "Category 1" },
+            new Category { Id = 2, Name = "Category 2" }
+        };
+            _repositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(categories);
+
+            // Act
+            var result = await _repositoryMock.Object.GetAllAsync();
+
+            // Assert
+            Assert.Equal(2, result.Count());
+        }
+
+        [Fact]
+        public async Task AddAsync_ShouldReturnAddedEntity()
+        {
+            // Arrange
+            var newCategory = new Category { Id = 3, Name = "New Category" };
+            _repositoryMock.Setup(repo => repo.AddAsync(newCategory)).ReturnsAsync(newCategory);
+
+            // Act
+            var result = await _repositoryMock.Object.AddAsync(newCategory);
+
+            // Assert
+            Assert.Equal(newCategory, result);
+        }
+    }
+
+    public class Category
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = null!;
+       
+    }
 }
-
-
-
-public class BaseRepositoryTests
-{
-	private readonly Mock<IBaseRepository<OrderEntity>> _mockRepository;
-
-	public BaseRepositoryTests()
-	{
-		_mockRepository = new Mock<IBaseRepository<OrderEntity>>();
-	}
-
-
-	[Fact]
-	public async Task CreateAsync_ShouldReturnOrderEntity()
-	{
-		// Arrange
-		var customer = new OrderCustomerEntity
-		{
-			CustomerName = "John Doe",
-			CustomerEmail = "john@domain.com",
-			CustomerPhone = "1234567890"
-		};
-
-		var address = new OrderAddressEntity
-		{
-			Address = "123 Main",
-			City = "New York",
-			PostalCode = "10001",
-			Country = "USA"
-		};
-
-		var products = new List<OrderProductEntity>
-		{
-			new() {
-				ProductName = "Product 1",
-				UnitPrice = "50",
-				Quantity = "2"
-			},
-			new() {
-				ProductName = "Product 2",
-				UnitPrice = "100",
-				Quantity = "5"
-			}
-		};
-
-		var orderEntity = new OrderEntity
-		{
-			TotalAmount = "100",
-			PaymnetMehod = "Cash",
-			ShipmentMethod = "UPS",
-			OrderAddress = address,
-			OrderProducts = products,
-			OrderCustomer = customer,
-		};
-		_mockRepository.Setup(x => x.CreateAsync(orderEntity)).ReturnsAsync(orderEntity);
-
-		// Act
-		var result = await _mockRepository.Object.CreateAsync(orderEntity);
-
-		// Assert
-		Assert.NotNull(result);
-		Assert.Equal(orderEntity, result);
-		Assert.Equal("John Doe", result.OrderCustomer.CustomerName);
-		Assert.Equal("Product 1", result.OrderProducts.FirstOrDefault(x => x.ProductName == "Product 1")!.ProductName);
-		Assert.Equal("Product 2", result.OrderProducts.FirstOrDefault(x => x.ProductName == "Product 2")!.ProductName);
-	}
