@@ -5,9 +5,9 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rika_CategoryProvider", "Rika_CategoryProvider\Rika_CategoryProvider.csproj", "{28CADC03-78F2-466C-BC62-7C88CD02349B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rika_CategoryProvider.Infrastructure", "Rika_CategoryProvider.Infrastructure\Rika_CategoryProvider.Infrastructure.csproj", "{7D958163-4E78-495E-BC44-0EAE7F94EE18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rika_CategoryProvider.Infrastructure", "Rika_CategoryProvider.Infrastructure\Rika_CategoryProvider.Infrastructure.csproj", "{7D958163-4E78-495E-BC44-0EAE7F94EE18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rika_CategoryProvider.Tests", "Rika_CategoryProvider.Tests\Rika_CategoryProvider.Tests.csproj", "{0CC1E00E-4C5A-4A00-BC55-AC0F09FEC00E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rika_CategoryProvider.Tests", "Rika_CategoryProvider.Tests\Rika_CategoryProvider.Tests.csproj", "{0CC1E00E-4C5A-4A00-BC55-AC0F09FEC00E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

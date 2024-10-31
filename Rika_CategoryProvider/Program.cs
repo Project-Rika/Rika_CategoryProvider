@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rika_CategoryProvider.Infrastructure.Context;
 using Rika_CategoryProvider.Infrastructure.Repos;
+using Microsoft.Extensions.Logging;
 
 var host = new HostBuilder()
 	.ConfigureFunctionsWebApplication()
@@ -13,8 +14,16 @@ var host = new HostBuilder()
 		services.AddApplicationInsightsTelemetryWorkerService();
 		services.ConfigureFunctionsApplicationInsights();
 
-		services.AddDbContext<CategoryDbContext>(options =>
-			options.UseSqlServer(context.Configuration.GetConnectionString("OrderProviderDb")));
+		var connectionString = context.Configuration.GetConnectionString("CategoryProviderDb");
+		if (string.IsNullOrEmpty(connectionString))
+		{
+			throw new InvalidOperationException("Connection string 'CategoryProviderDb' is not found.");
+		}
+
+		services.AddPooledDbContextFactory<CategoryDbContext>(options =>
+		{
+			options.UseSqlServer(connectionString);
+		});
 
 		services.AddScoped<CategoryRepository>();
 		services.AddScoped<CategoryService>();
