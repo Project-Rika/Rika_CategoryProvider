@@ -66,5 +66,4 @@ public class CategoryRepository : IBaseRepository<CategoryEntity>
 	{
 		return await _context.Categories.ToListAsync();
 	}
-
 }

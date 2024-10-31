@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Rika_CategoryProvider.Infrastructure.Repos
@@ -11,5 +12,7 @@ namespace Rika_CategoryProvider.Infrastructure.Repos
 		Task<T?> GetByIdAsync(int id);
 		Task<T?> GetByNameAsync(string name);
 		Task<IEnumerable<T>> GetAllAsync();
-	}
+
+        Task<T?> GetCategoryAsync(Expression<Func<T, bool>> predicate);
+    }
 }
