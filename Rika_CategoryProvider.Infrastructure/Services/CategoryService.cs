@@ -4,16 +4,17 @@ using Rika_CategoryProvider.Infrastructure.Repos;
 
 public class CategoryService
 {
-	private readonly CategoryRepository _categoryRepository;
-	private readonly ILogger<CategoryService> _logger;
+    private readonly IBaseRepository<CategoryEntity> _categoryRepository;
+    private readonly ILogger<CategoryService> _logger;
 
-	public CategoryService(CategoryRepository categoryRepository, ILogger<CategoryService> logger)
-	{
-		_categoryRepository = categoryRepository;
-		_logger = logger;
-	}
+    public CategoryService(IBaseRepository<CategoryEntity> categoryRepository, ILogger<CategoryService> logger)
+    {
+        _categoryRepository = categoryRepository;
+        _logger = logger;
+    }
 
-	public async Task<CategoryEntity> AddCategoryAsync(string categoryName)
+
+    public async Task<CategoryEntity> AddCategoryAsync(string categoryName)
 	{
 		var existingCategory = await _categoryRepository.GetCategoryAsync(x => x.CategoryName == categoryName);
 		if (existingCategory != null)

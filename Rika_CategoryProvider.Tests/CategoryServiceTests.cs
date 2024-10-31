@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
-using Microsoft.Extensions.Logging;
 using Rika_CategoryProvider.Infrastructure.Entities;
 using Rika_CategoryProvider.Infrastructure.Repos;
 
-namespace Rika_CategoryProvider.Tests;
-
 public class CategoryServiceTests
 {
-    private readonly Mock<CategoryRepository> _categoryRepositoryMock;
+    private readonly Mock<IBaseRepository<CategoryEntity>> _categoryRepositoryMock;
     private readonly Mock<ILogger<CategoryService>> _loggerMock;
     private readonly CategoryService _categoryService;
 
     public CategoryServiceTests()
     {
-        _categoryRepositoryMock = new Mock<CategoryRepository>();
+        _categoryRepositoryMock = new Mock<IBaseRepository<CategoryEntity>>();
         _loggerMock = new Mock<ILogger<CategoryService>>();
         _categoryService = new CategoryService(_categoryRepositoryMock.Object, _loggerMock.Object);
     }
@@ -27,10 +26,11 @@ public class CategoryServiceTests
     {
         // Arrange
         var categoryName = "New Category";
-        _categoryRepositoryMock?.Setup(repo => repo.GetCategoryAsync(It.IsAny<Func<CategoryEntity, bool>>()))
-                               .ReturnsAsync((CategoryEntity)null);  // Simulera att kategorin inte finns
 
-        _categoryRepositoryMock?.Setup(repo => repo.AddAsync(It.IsAny<CategoryEntity>()))
+        _categoryRepositoryMock.Setup(repo => repo.GetCategoryAsync(It.IsAny<Expression<Func<CategoryEntity, bool>>>()))
+                               .ReturnsAsync((CategoryEntity)null); // Simulerar att kategorin inte finns
+
+        _categoryRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<CategoryEntity>()))
                                .ReturnsAsync(new CategoryEntity { CategoryName = categoryName });
 
         // Act
@@ -47,11 +47,12 @@ public class CategoryServiceTests
     {
         // Arrange
         var categoryName = "Existing Category";
-        _categoryRepositoryMock.Setup(repo => repo.GetCategoryAsync(It.IsAny<Func<CategoryEntity, bool>>()))
-                               .ReturnsAsync(new CategoryEntity { CategoryName = categoryName }); // Simulera att kategorin redan finns
+        _categoryRepositoryMock.Setup(repo => repo.GetCategoryAsync(It.IsAny<Expression<Func<CategoryEntity, bool>>>()))
+                               .ReturnsAsync(new CategoryEntity { CategoryName = categoryName }); // Simulerar att kategorin redan finns
 
         // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _categoryService.AddCategoryAsync(categoryName));
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _categoryService.AddCategoryAsync(categoryName));
+        Assert.Equal("Category already exists.", exception.Message); // Kontrollera undantagsmeddelandet
     }
 
     [Fact]
@@ -81,10 +82,16 @@ public class CategoryServiceTests
 
         // Act & Assert
         await Assert.ThrowsAsync<Exception>(() => _categoryService.GetAllCategoriesAsync());
+
         _loggerMock.Verify(
-            logger => logger.LogError(It.IsAny<Exception>(), "An error occurred while getting all categories."),
+            logger => logger.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("An error occurred while getting all categories.")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
             Times.Once
         );
     }
-}
 
+}
