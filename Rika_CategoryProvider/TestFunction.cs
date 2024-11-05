@@ -5,20 +5,20 @@ using Microsoft.Extensions.Logging;
 
 namespace Rika_CategoryProvider
 {
-    public class TestFunction
-    {
-        private readonly ILogger<TestFunction> _logger;
+	public class TestFunction
+	{
+		private readonly ILogger<TestFunction> _logger;
 
-        public TestFunction(ILogger<TestFunction> logger)
-        {
-            _logger = logger;
-        }
+		public TestFunction(ILogger<TestFunction> logger)
+		{
+			_logger = logger;
+		}
 
-        [Function("TestFunction")]
-        public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
-        {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Welcome to Azure Functions!");
-        }
-    }
+		[Function("TestFunction")]
+		public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
+		{
+			_logger.LogInformation("C# HTTP trigger function processed a request.");
+			return new OkObjectResult("Welcome to Azure Functions!");
+		}
+	}
 }
