@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 var host = new HostBuilder()
 	.ConfigureFunctionsWebApplication()
-	.ConfigureServices((context, services) =>
+	.ConfigureServices((Action<HostBuilderContext, IServiceCollection>)((context, services) =>
 	{
 		services.AddApplicationInsightsTelemetryWorkerService();
 		services.ConfigureFunctionsApplicationInsights();
@@ -29,7 +29,7 @@ var host = new HostBuilder()
 		services.AddScoped<CategoryService>();
 
 		services.AddLogging();
-	})
+	}))
 	.Build();
 
 host.Run();
