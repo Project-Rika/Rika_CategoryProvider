@@ -13,14 +13,14 @@ namespace Rika_CategoryService.Tests;
 public class CategoryServiceTests
 {
     private readonly Mock<IBaseRepository<CategoryEntity>> _categoryRepositoryMock;
-    private readonly Mock<ILogger<ICategoryService>> _loggerMock;
-    private readonly ICategoryService _categoryService;
+    private readonly Mock<ILogger<CategoryService>> _loggerMock;
+    private readonly CategoryService _categoryService;
 
     public CategoryServiceTests()
     {
         _categoryRepositoryMock = new Mock<IBaseRepository<CategoryEntity>>();
-        _loggerMock = new Mock<ILogger<ICategoryService>>();
-        _categoryService = new ICategoryService(_categoryRepositoryMock.Object, _loggerMock.Object);
+        _loggerMock = new Mock<ILogger<CategoryService>>();
+        _categoryService = new CategoryService(_categoryRepositoryMock.Object, _loggerMock.Object);
     }
 
     [Fact]
