@@ -18,7 +18,7 @@ public class GetAllCategories
 	}
 
 	[Function("GetAllCategories")]
-	public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "categories")] HttpRequest req)
+	public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "categories")] HttpRequest req)
 	{
 		_logger.LogInformation("C# HTTP trigger function processed a request to get all categories.");
 

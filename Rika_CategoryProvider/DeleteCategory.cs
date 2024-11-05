@@ -18,7 +18,7 @@ namespace Rika_CategoryProvider
 		}
 
 		[Function("DeleteCategory")]
-		public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "category/{id}")] HttpRequest req, int id)
+		public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "category/{id}")] HttpRequest req, int id)
 		{
 			_logger.LogInformation("C# HTTP trigger function processed a request to delete category with ID: {Id}", id);
 
