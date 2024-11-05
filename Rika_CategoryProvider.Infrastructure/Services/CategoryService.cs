@@ -2,19 +2,19 @@
 using Rika_CategoryProvider.Infrastructure.Entities;
 using Rika_CategoryProvider.Infrastructure.Repos;
 
+
 public class CategoryService
 {
-    private readonly IBaseRepository<CategoryEntity> _categoryRepository;
-    private readonly ILogger<CategoryService> _logger;
+	private readonly IBaseRepository<CategoryEntity> _categoryRepository;
+	private readonly ILogger<CategoryService> _logger;
 
-    public CategoryService(IBaseRepository<CategoryEntity> categoryRepository, ILogger<CategoryService> logger)
-    {
-        _categoryRepository = categoryRepository;
-        _logger = logger;
-    }
+	public CategoryService(IBaseRepository<CategoryEntity> categoryRepository, ILogger<CategoryService> logger)
+	{
+		_categoryRepository = categoryRepository;
+		_logger = logger;
+	}
 
-
-    public async Task<CategoryEntity> AddCategoryAsync(string categoryName)
+	public async Task<CategoryEntity> AddCategoryAsync(string categoryName)
 	{
 		var existingCategory = await _categoryRepository.GetCategoryAsync(x => x.CategoryName == categoryName);
 		if (existingCategory != null)
@@ -40,13 +40,27 @@ public class CategoryService
 		catch (Exception ex)
 		{
 			_logger.LogError(ex, "An error occurred while getting all categories.");
-			throw; 
+			throw;
+		}
+	}
+
+	public async Task<bool> DeleteCategoryAsync(int id)
+	{
+		try
+		{
+			var category = await _categoryRepository.GetByIdAsync(id);
+			if (category == null)
+			{
+				return false;
+			}
+
+			await _categoryRepository.DeleteAsync(category);
+			return true;
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "An error occurred while deleting the category.");
+			throw;
 		}
 	}
 }
-
-
-
-
-
-
