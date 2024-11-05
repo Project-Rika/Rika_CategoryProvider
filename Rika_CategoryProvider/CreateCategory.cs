@@ -20,7 +20,7 @@ namespace Rika_CategoryProvider
 		}
 
 		[Function("CreateCategory")]
-		public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "category")] HttpRequest req)
+		public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "category")] HttpRequest req)
 		{
 			_logger.LogInformation("C# HTTP trigger function processed a request to create a new category.");
 

@@ -20,7 +20,7 @@ namespace Rika_CategoryProvider
 		}
 
 		[Function("UpdateCategory")]
-		public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "put", Route = "category/{id}")] HttpRequest req, int id)
+		public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "category/{id}")] HttpRequest req, int id)
 		{
 			_logger.LogInformation("C# HTTP trigger function processed a request to update category with ID: {Id}", id);
 
