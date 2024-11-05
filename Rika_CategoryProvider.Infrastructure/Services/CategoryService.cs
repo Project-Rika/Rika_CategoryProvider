@@ -63,4 +63,25 @@ public class CategoryService
 			throw;
 		}
 	}
+
+	public async Task<bool> UpdateCategoryAsync(int id, CategoryEntity updatedCategory)
+	{
+		try
+		{
+			var existingCategory = await _categoryRepository.GetByIdAsync(id);
+			if (existingCategory == null)
+			{
+				return false;
+			}
+
+			existingCategory.CategoryName = updatedCategory.CategoryName;
+			await _categoryRepository.UpdateAsync(existingCategory);
+			return true;
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "An error occurred while updating the category with ID: {Id}", id);
+			throw;
+		}
+	}
 }
