@@ -44,7 +44,28 @@ public class CategoryService
 		}
 	}
 
-	public async Task<bool> DeleteCategoryAsync(int id)
+    public async Task<CategoryEntity> GetCategoryByIdAsync(int id)
+    {
+        try
+        {
+            var category = await _categoryRepository.GetByIdAsync(id);
+
+            if (category == null)
+            {
+                _logger.LogWarning($"Category with ID: {id} not found.");
+            }
+
+            return category;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"An error occurred while getting the category with ID: {id}");
+            throw;
+        }
+    }
+
+
+    public async Task<bool> DeleteCategoryAsync(int id)
 	{
 		try
 		{
