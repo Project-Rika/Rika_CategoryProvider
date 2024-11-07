@@ -14,24 +14,22 @@ public class CategoryService
 		_logger = logger;
 	}
 
-	public async Task<CategoryEntity> AddCategoryAsync(string categoryName)
-	{
-		var existingCategory = await _categoryRepository.GetCategoryAsync(x => x.CategoryName == categoryName);
-		if (existingCategory != null)
-		{
-			throw new InvalidOperationException("Category already exists.");
-		}
+    public async Task<CategoryEntity> AddCategoryAsync(string categoryName)
+    {
+        var existingCategory = await _categoryRepository.GetByNameAsync(categoryName);
+        if (existingCategory != null)
+        {
+            throw new InvalidOperationException("Category already exists.");
+        }
 
-		var newCategory = new CategoryEntity
-		{
-			CategoryName = categoryName
-		};
+        var newCategory = new CategoryEntity { CategoryName = categoryName };
+        await _categoryRepository.AddAsync(newCategory);
 
-		var addedCategory = await _categoryRepository.AddAsync(newCategory);
-		return addedCategory;
-	}
+        return newCategory;
+    }
 
-	public async Task<IEnumerable<CategoryEntity>> GetAllCategoriesAsync()
+
+    public async Task<IEnumerable<CategoryEntity>> GetAllCategoriesAsync()
 	{
 		try
 		{
