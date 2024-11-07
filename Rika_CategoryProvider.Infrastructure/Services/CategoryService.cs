@@ -16,7 +16,7 @@ public class CategoryService
 
     public async Task<CategoryEntity> AddCategoryAsync(string categoryName)
     {
-        var existingCategory = await _categoryRepository.GetByNameAsync(categoryName);
+        var existingCategory = await _categoryRepository.GetByNameAsync(c => c.CategoryName == categoryName);
         if (existingCategory != null)
         {
             throw new InvalidOperationException("Category already exists.");

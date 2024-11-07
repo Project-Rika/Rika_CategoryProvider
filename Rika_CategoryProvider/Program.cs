@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Rika_CategoryProvider.Infrastructure.Context;
 using Rika_CategoryProvider.Infrastructure.Repos;
 using Microsoft.Extensions.Logging;
+using Rika_CategoryProvider.Infrastructure.Entities;
 
 var host = new HostBuilder()
 	.ConfigureFunctionsWebApplication()
@@ -20,12 +21,14 @@ var host = new HostBuilder()
 			throw new InvalidOperationException("Connection string 'CategoryProviderDb' is not found.");
 		}
 
-		services.AddPooledDbContextFactory<CategoryDbContext>(options =>
+		services.AddDbContext<CategoryDbContext>(options =>
 		{
 			options.UseSqlServer(connectionString);
 		});
 
-		services.AddScoped<CategoryRepository>();
+        services.AddScoped<IBaseRepository<CategoryEntity>, BaseRepository<CategoryEntity>>();
+
+        services.AddScoped<CategoryRepository>();
 		services.AddScoped<CategoryService>();
 
 		services.AddLogging();
