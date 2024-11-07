@@ -10,7 +10,7 @@ namespace Rika_CategoryProvider.Infrastructure.Repos
 		Task<T> UpdateAsync(T entity);
 		Task<T> DeleteAsync(T entity);
 		Task<T?> GetByIdAsync(int id);
-		Task<T?> GetByNameAsync(string name);
+		Task<T?> GetByNameAsync(Expression<Func<T, bool>> predicate);
 		Task<IEnumerable<T>> GetAllAsync();
 
         Task<T?> GetCategoryAsync(Expression<Func<T, bool>> predicate);
