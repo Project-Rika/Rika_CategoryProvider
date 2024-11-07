@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Rika_CategoryProvider.Infrastructure.Entities;
 using System.Text.Json;
 
-
 namespace Rika_CategoryProvider.Functions;
 
 public class CreateCategory
