@@ -1,20 +1,17 @@
-﻿# Rika_CategoryProvider
-
 # API Dokumentation
 
 ## Skapa kategori (`CreateCategory`)
 
-**Endpoint:** `/api/category/createcategory`  
+**Endpoint:** `/api/category/CreateCategory`  
 **Metod:** `POST`
 
 ### Request Body
 
 ```json
-[
-    {
+
+{
     "CategoryName": "string"
-    }
-]
+}
 
 ````
 
@@ -23,13 +20,11 @@
 **Endpoint:** `/api/categories/GetAllCategories`  
 **Metod:** `GET`
 
-### Request Body
-
 ```json
 [
     {
-      "CategoryName": "string"
-      "categoryId": int
+      "categoryName": "string"
+      "categoryId": 123
     }
 ]
 
@@ -39,14 +34,12 @@
 **Endpoint:** `/api/category/GetOneCategory/{id}`  
 **Metod:** `GET`
 
-### Request Body
-
 ```json
-[
-    {
-    "CategoryName": "string"
-    }
-]
+
+{
+    "categoryName": "string",
+    "categoryId": 123
+}
 
 ````
 
@@ -58,11 +51,11 @@
 ### Request Body
 
 ```json
-[
-   {
-    "CategoryName": "string"
-    }
-]
+
+{
+    "categoryId": 123,
+    "categoryName": "string"
+}
 
 ````
 
